@@ -1,0 +1,29 @@
+{
+  "name": "laydown",
+  "version": "0.0.1",
+  "description": "Lay down some code files from other code files.",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/BriteSnow/laydown.git"
+  },
+  "keywords": [
+    "code",
+    "scaffolding",
+    "code",
+    "template",
+    "dev",
+    "tool",
+    "reuse"
+  ],
+  "bin": "./dist/index-bin.js",
+  "author": "Jeremy Chone <jeremy.chone@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/BriteSnow/laydown/issues"
+  },
+  "homepage": "https://github.com/BriteSnow/laydown#readme"
+}
