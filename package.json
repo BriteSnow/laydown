@@ -1,7 +1,7 @@
 {
   "name": "laydown",
-  "version": "0.0.1",
-  "description": "Lay down some code files from other code files.",
+  "version": "0.0.2",
+  "description": "Laying down and sharing some code has never by that simple.",
   "main": "dist/index.js",
   "scripts": {
     "test": "./node_modules/.bin/mocha --opts mocha.opts"
@@ -27,7 +27,7 @@
   },
   "homepage": "https://github.com/BriteSnow/laydown#readme",
   "dependencies": {
-    "fs-extra-plus": "^0.1.2",
+    "fs-extra-plus": "file:../../node-fs-extra-plus/node-fs-extra-plus_src",
     "minimist": "^1.2.0"
   },
   "devDependencies": {

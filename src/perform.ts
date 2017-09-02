@@ -1,5 +1,5 @@
 import path = require("path");
-import fs = require("fs-extra");
+import fs = require("fs-extra-plus");
 import { Cmd, AddCmd } from "./cmd_parse";
 
 export async function exec(cmd: Cmd): Promise<any> {
@@ -10,12 +10,13 @@ export async function exec(cmd: Cmd): Promise<any> {
 	}
 }
 
+const laydownJsonFileName = "laydown.json";
 
 async function execAddCmd(addCmd: AddCmd) {
 
 	// get the source, add the default json file if no json file, and make sure it is full resolved
 	let sourcePath = path.resolve(addCmd.cwd, addCmd.source);
-	sourcePath = sourcePath.endsWith(".json") ? sourcePath : sourcePath + "/laydown-layers.json";
+	sourcePath = sourcePath.endsWith(".json") ? sourcePath : sourcePath + "/" + laydownJsonFileName;
 	sourcePath = path.resolve(sourcePath);
 
 	let sourceInfo = path.parse(sourcePath);
@@ -81,9 +82,8 @@ async function execAddCmd(addCmd: AddCmd) {
 	const relativeLayersJson = path.relative(addCmd.cwd, sourcePath);
 
 	// print the result heading
-	var heading = ["Files added to layer '",
-		addCmd.layerName,
-		"' in '" + relativeLayersJson + "':"]
+	var heading = ["Files added to layer '" +
+		addCmd.layerName + "' in '" + relativeLayersJson + "':"]
 	console.log(heading.join(" "));
 	// print the items
 	for (let f of files){

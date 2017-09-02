@@ -2,8 +2,6 @@
 
 This tool is not implemented yet, this is a first pass at the main spec. If you are interested in this project, feel free to email me: jeremy.chone@gmail.com.
 
-All commands listed here are in flux right now and not even in sync between the doc side and the story side (to experiment with different ways). The story is the latest thoughts right now (favor default for simplicity, and will have flags to customize). Will probably have a ~/.laydown/lay.opts to set default.
-
 ## Description
 
 **laydown** is simple way to slice your or 3rd party code in layers (i.e., set of files) and easily share them to boostrap or augument existing projects. Not every reusable codes had to become a library or framework. Think of it as a scaffolder that does not know what it scaffolds, any project can become a part of a scaffolding for another project.
@@ -16,189 +14,158 @@ sudo npm install -g laydown
 
 This will install the `lay` command line tool.
 
-## Add/Create
-
-**Command:**
-
-`lay add source_local_ref layer_name file_paths_space_deliminated`
-
-- _source_local_ref:_ folder path (in this case laydown-layers.json will be added), layers json file, or source name.
-
-**Example**
-
-Assuming we are in the `/project-A/src/common/` folder.
-
-`lay add ../../ data ds.ts dsoMem.ts`
-
-This command will create or update the following file 
-
-`/project-A/laydown-layers.json`
-```js
-{
-  layers: {
-    data: {
-      files: [
-        "src/common/ds.ts",
-        "src/common/dsoMem.ts"
-      ]
-    }
-  }
-}
-```
-
-
-- The file paths will be relatives to `laydown-layers.json` files.
-- More files can be added by using `lay add` with same layer name. 
-- Can be removed with `lay remove ../../ data ds.ts` for example. 
-- Can list the files like `lay list ../../ data` will list the files in this layers. 
-
-## Download
-
-**Command:**
-
-`lay down source_ref layer_name [out_dir]`
-
-- _source_ref:_ source_local_ref + uri.
-
-**Example:**
-
-`lay down /project-A/ data ./src/data`
-
-will download all of the files specified in the `/demo/laydown-layers.json` "data" layer into the directory `./src/data/` (will create the directory if needed). 
-
-> Note: The source structure is not preserved, just file name. 
-
-## Add a source (aka Alias)
-
-**Format:**
-
-`lay source source_context source_path_or_uri [name_override]`
-
-**Example:**
-
-`lay source ~ /demo/ cool-patterns`
-
-- _source_context:_
-  - `.` means is the project local (where we have a .git or the closest `laydown-layers.json` or `laydown-sources.json`)
-  - `~` means global to the user will be stored in `~/.laydown/sources.json`
-  - `normal/path` can be full path path of a folder or source json file.
-- _source_path_or_uri:_ can be URL, local file path, and later git urls as well. 
-
-will create/update the file: 
-
-`~/.laydown/sources.json`
-
-```js
-{
-  sources: {
-    "cool-patterns": {
-      origin: "/demo/"
-    }
-  }
-}
-```
-
-
-## Notes
-
-- uri: first will be http/https, but will support git later. 
-- github website URLs will be transparently converted behind the scene to the raw content ones (to avoid users to get the raw urls). Later we might give some hooks to provide custom uri transformers.
-
-
 ## Story
 
-This is just a story, it is not real yet. 
+This is just a story, it did not happen... yet. Story of a developer, gool-guy, that wants to start a new web project quickly with some small but robust and scalable code.
+
+> Cool, got a new project, I need a quick way to start a lean web app, and I would love to be able to scaffold one quickly. 
+
+> Just heard about`laydown`, which seems to be a generic "scaffolding" tools that can turn any project to a scaffolding source. 
 
 ```sh
-# install a layers repo (just a name pointer to a base dir of a laydown-layers.json or a layers json file)
-> lay source https://github.com/cool-patterns
-Source "cool-patterns" with origin "https://github.com/cool-patterns" added to "~/laydown/sources.json"
+$ sudo npm install -g laydown
+laydown 0.1.0 installed, start with 'lay ?'
+```
 
-# download the scaffolding for a new typescript-webapp
-> lay down cool-patterns web-starter
-Layer web-starter from source cool-patterns downloaded:
-  - packages.json 
-  - tsconfig.json
-  - build/scripts.js
-  - src/main.ts
-  - src/view/MainView.ts
-  - src/view/MainView.pcss test/test-main.ts
-  - mocha.opts
-  - web/index.html
+> Fair enough. 
 
-# ... Doing a "npm install" "npm run build" "npm start" ... wow stuff works!! 
-# ... Cool, this is my code now, I can play with it.
+```sh 
+$ lay ?
+laydown version 0.1.0 help:
+Getting started: 
+  - 'lay source https://github.com/laydown-io/lean-web-app' to setup the 'lean-web-app' source alias.
+  - 'lay down lean-web-app base' to download the 'base' layer from the 'lean-web-app' source.
+  - 'lay desc lean-web-app' to describe the layers of this source.
+  - 'lay ??' to open "https://laydown.io"
+Commands: 
+  - "lay source _source_ [_optional_name_]": add a source name.
+  - "lay down _source_": download a layer from a source.
+  - "lay add _source_ _layer_name_ _files_": Create or add to an existing layer.
+  - "lay desc _source_ [_layer_name_]": Describe a source or layer.
+  - "lay ? _command_name_" to get more info on a command.
+```
 
-# ... Now, I would love to have some basic google material styles
+> Cool, let me try the two first commands.
 
-> lay down cool-patterns base-material
-Layer base-material from source cool-patterns downloaded: 
-  - src/pcss/basic-material-demo.pcss
-  - src/pcss/basic-materia-mixins.pcss
-  - web/base-material-demo.html
+```sh
+$ lay source https://github.com/laydown-io/lean-web-app
+$ lay down lean-web-app base
+Layer 'base' from source 'lean-web-app' downloaded.
+  Files:
+    - packages.json (added)
+    - tsconfig.json (added)
+    - build/scripts.js (added)
+    - src/main.ts (added)
+    - src/view/MainView.ts (added)
+    - src/view/MainView.pcss test/test-main.ts (added)
+    - mocha.opts (added)
+    - web/index.html (added)
+  Description:
+    This is the minimum set of files to get a lean web app running. Do a "npm install" "npm run build" "npm start -w"
+```
 
-# ... "npm run build" "npm start" ... going to http://localhost:8080/base-material-demo.html
-# ... Cool, I see the style there that I can use. 
+> Let me give it a try. 
 
-# ... Hum, wonder if this cool-patterns have some data layer to get me started.
-> lay desc cool-patterns
-Available layers in cool-patterns (https://github.com/cool-patterns)
-  - "web-starter" : Base code layer for a first hello world using framework ..., post-css, and build scripts ..., ...
-  - "base-material" : Minimalist google base material mixins than you can reuse in your app code
-  - "data-layer" : Simple and extensible data layer based on a Data Service Object model. Contains a DsoMem for quick prototyping, and DsoRemote base class for remote access
-  - "route" : Simple routing emitter based on the mvdom pub/sub
- 
+```sh
+$ npm install
+# ...module installed message...
+$ npm run build
+# ...building ...
+$ npm start
+# ... start the app and launch browser to localhost:8008/...
+```
 
-# ... "data-layer" seems to be interesting, let me check it.
-> lay desc cool-patterns data-layer
+> Wow, that's launch my browser, and I have a first "hello world", and now it is my code, nothing else to do. 
+
+> Wonder if there are other cool layers in this source. 
+
+```sh
+$ lay ? lean-web-app
+Description for 'lean-web-app' (https://github.com/laydown-io/lean-web-app) source: 
+  Layers: 
+    - 'base' : Base code layer for a first hello world using framework ..., post-css, and build scripts ..., ...
+    - 'base-material' : Minimalist google base material postcss mixins than you can reuse in your app code
+    - 'data' : Simple and extensible data layer based on a Data Service Object model. Contains a DsoMem for quick prototyping, and DsoRemote base class for remote access
+    - 'route' : Simple routing emitter based on the mvdom pub/sub
+  Description: 
+    Lean but scallable web application base on typescript, postcss, mvdom, handlebars with some basic google material styles. Great to start new advanced business or consumer web application.
+```
+
+> Interesting, let me download the 'base-material' and 'data' layers.
+
+```sh
+$ lay down lay-web-app base-material data
+Layers 'base-material' and 'data' from 'lean-web-app' downloaded.
+Layer 'base-material':
+  Files:
+    - pcss/base-material.pcss (added)
+    - pcss/base-material-demo.pcss (added)
+    - web/demo/base-material-demo.html (added)
+  Description:
+    Minimalist google base material postcss mixins than you can reuse in your app code
+Layer 'data':
+  Files:
+    - src/data/ds.ts (added)
+    - src/data/DsoMem.ts (added)
+    - src/data/DsoRemote.ts (added)
+    - test/data/test-ds-mem.ts (added)
+  Description:
+    Simple and extensible data layer based on a Data Service Object model. Contains a DsoMem for quick prototyping, and DsoRemote base class for remote access
+```
+
+> hum, what are those data files, let me get more information. 
+
+```sh
+$ lay desc lay-web-app data
 Layer "data-layer": 
-  - Description: Simple and extensible data layer based on a Data Service Object model. Contains a DsoMem for quick prototyping, and DsoRemote base class for remote access
-  - Files
+  Files:
     - "src/data/ds.ts": Use it as ds.dso(PeopeDso), which will manage the PeopleDso object as a singleton (create only the first time called)
     - "src/data/DsoMem": You can stend your own class from the DsoMem as "class Contact extends DsoMem<number>" (where number is the id type)
     - "src/data/DsoRemote": Same as the DsoMem, but used REST calls to get data from server. 
     - "test/data/test-ds-mem.ts": Unit test that test the ds and DsoMem (test can be run with -g test-ds-mem. 
+  Description: 
+    Simple and extensible data layer based on a Data Service Object model. Contains a DsoMem for quick prototyping, and DsoRemote base class for remote access
+  Readme provided: 
+    'lay read lay-web-app data' to open page in browser or
+    'lay show lay-web-app data' to show readme raw content in terminal
+```
 
-# ... Interesting let me download this. 
-> lay down cool-patterns data-layer
-Layer data-layer from source cool-patterns downlaoded:
-  - src/data/ds.ts
-  - src/data/DsoMem
-  - src/data/DsoRemote
-  - test/data/test-ds-mem.ts
+> Cool, let me read the readme, and then, get some work done. 
 
-# ... "npm run build" "npm test -- -g test-ds-mem
-# ... ha, I looked at the test/data/test-ds-mem.ts, I get the api, let me give it a try
+> Ok, now, I am ready to make my own layer about a little .ts/.pcss component I did. 
 
-# ... a long time passed
+```sh
+lay add ./ toggle src/elem/toggle/toggle.ts src/elem/toggle/toggle.pcss
+Layer 'toggle' (created) in './laydown.json':
+  Files:
+    - src/elem/toggle/toggle.ts
+    - src/elem/toggle/toggle.pcss
+```
 
-# ... I created a cool little toggle component, would love to share the code
-> lay ?
-laydown commands:
-  - "lay source ...": add a source name
-  - "lay down ...": download a layer
-  - "lay add ...": Create or add to an existing layer (from project root try "lay add ./ my-first-layer src/some-file.js src/another-file.js" and check "./laydown-layers.json")
+> Let me check that it created. 
 
-# ... Cool, I want share my cool toggle component
-> lay add ./ toggle src/elem/toggle/toggle.ts src/elem/toggle/toggle.pcss
-Files added to layer 'toggle' (created) in './laydown-layers.json':
-  - src/elem/toggle/toggle.ts
-  - src/elem/toggle/toggle.pcss
-
-
-# ... let me check the newly created ./laydown-layers.json
+```sh
+$ cat ./laydown.json
 {
-  layers: {
-    toggle: {
-      files: [
+  "layers": {
+    "toggle": {
+      "files:" [
         "src/elem/toggle/toggle.ts",
         "src/elem/toggle/toggle.pcss"
       ]
     }
   }
 }
+```
 
-# ... cool, let me share that with my friend
+> cool, let me push to my repo, and share it with my only and lonely friend. 
 
-# ... "Hey friend, do a 'lay source https://github.com/cool-guy/cool-project' and then 'lay down cool-project toggle' and that should get you started. Best!"
-``` 
+> email to friend "hey friend, did a little simple toggle component, feel free to download the code and make it yours. Just do a `lay down https://github.com/cool-guy/cool-web-app toggle` and you should be all set. Best."
+
+
+## Notes
+
+- All commands listed here are in flux right now and not even in sync between the doc side and the story side (to experiment with different ways). 
+- Will probably have a ~/.laydown/lay.opts to set default.
+- uri: first will be http/https, but will support git later. 
+- github website URLs will be transparently converted behind the scene to the raw content ones (to avoid users to get the raw urls). Later we might give some hooks to provide custom uri transformers.

@@ -1,43 +1,51 @@
-import {lay} from "../src/lay";
-import fs = require("fs-extra");
+import { lay } from "../src/lay";
+import fs = require("fs-extra-plus");
 import path = require("path");
+import { setupTestDir, resetTestRoot } from "./utils";
 
-describe('lay', function() {
-	it('simple-add', async function() {
+
+describe('test-lay-add', function () {
+
+	before(resetTestRoot);
+
+	it('simple-add', async function () {
 		const testDir = await setupTestDir(this.test);
-		
-		var pwd = path.join(testDir, "src");
-		var argv = "node dist/lay-bin add ../ layer-1 index.js lay.js".split(" ");
+
+		var pwd = path.join(testDir, "project-A/src");
+		var argv = "node dist/lay-bin add ../ layer-1 index.js.txt lay.js.txt".split(" ");
 		var result = await lay(pwd, argv);
-				
+
+		// todo: do the asserts (console.log and files)
 	});
 
-	it('add-and-again', async function() {
+	it('add-and-again', async function () {
 		const testDir = await setupTestDir(this.test);
-		
-		var pwd = path.join(testDir, "src");
-		var argv = "node dist/lay-bin add ../ data index.js lay.js".split(" ");
+
+		var pwd = path.join(testDir, "project-A/src/");
+		var argv = "node dist/lay-bin add ../ data index.js.txt lay.js.txt".split(" ");
 		await lay(pwd, argv);
-		argv = "node dist/lay-bin add ../ data utils.js".split(" ");
+		argv = "node dist/lay-bin add ../ data utils.js.txt".split(" ");
 		await lay(pwd, argv);
 	});
 });
 
-const srcToCopy = "dist/"
-const testRootDir = "test/out/";
 
-async function setupTestDir(test: any): Promise<string>{
-	var testDirSuffix = test.fullTitle().split(" ").join("/");
-	var testDir = path.join(testRootDir, testDirSuffix);
-	testDir = path.resolve(testDir);
+describe('test-lay-down', function () {
 
-	// Add some safety when deleting stuff
-	if (!testDir.includes("test/out")){
-		throw new Error("Test dir to be deleted do not look like a testDir " + testDir);
-	}
-	await fs.remove(testDir);
-	await fs.mkdirs(testDir);
-  await fs.copy(srcToCopy, path.join(testDir, "src/"));
+	before(resetTestRoot);
 
-	return testDir;
-}
+	it('simple-down', async function () {
+		const testDir = await setupTestDir(this.test);
+
+		const sourceDir = path.join(testDir, "source-1");
+
+		// Setup: First 
+		// Define
+		var pwd = path.join(sourceDir, "project-A/src/");
+		var argv = "node dist/lay-bin add ../ layer-1 index.js.txt lay.js.txt".split(" ");
+		var result = await lay(pwd, argv);
+
+		// todo: add checks
+	});
+
+});
