@@ -173,4 +173,8 @@ laydown commands:
     }
   }
 }
+
+# ... cool, let me share that with my friend
+
+# ... "Hey my friend, do a 'lay source https://github.com/cool-guy/cool-project' and then 'lay down cool-project toggle' and that should get you started. Best!"
 ``` 
