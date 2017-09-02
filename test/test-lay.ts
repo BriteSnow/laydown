@@ -7,7 +7,7 @@ describe('lay', function() {
 		const testDir = await setupTestDir(this.test);
 		
 		var pwd = path.join(testDir, "src");
-		var argv = "node dist/lay-bin add ../ data ds.js dsoMem.js".split(" ");
+		var argv = "node dist/lay-bin add ../ layer-1 index.js lay.js".split(" ");
 		var result = await lay(pwd, argv);
 				
 	});
@@ -16,14 +16,14 @@ describe('lay', function() {
 		const testDir = await setupTestDir(this.test);
 		
 		var pwd = path.join(testDir, "src");
-		var argv = "node dist/lay-bin add ../ data ds.js dsoMem.js".split(" ");
+		var argv = "node dist/lay-bin add ../ data index.js lay.js".split(" ");
 		await lay(pwd, argv);
-		argv = "node dist/lay-bin add ../ data dsoRemote.js".split(" ");
+		argv = "node dist/lay-bin add ../ data utils.js".split(" ");
 		await lay(pwd, argv);
 	});
 });
 
-const srcToCopy = "src/"
+const srcToCopy = "dist/"
 const testRootDir = "test/out/";
 
 async function setupTestDir(test: any): Promise<string>{
@@ -37,7 +37,7 @@ async function setupTestDir(test: any): Promise<string>{
 	}
 	await fs.remove(testDir);
 	await fs.mkdirs(testDir);
-//	await fs.copy(srcToCopy, path.join(testDir, "src/"));
+  await fs.copy(srcToCopy, path.join(testDir, "src/"));
 
 	return testDir;
 }

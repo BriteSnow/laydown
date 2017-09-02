@@ -11,7 +11,6 @@ export class Cmd {
 
 export function cmd_parse(cwd: string, argv: string[]): Cmd{
 	var cmd = minimist(argv.slice(2), {"boolean": "g"});
-	console.log("raw cmd: ", cmd);
 
 	if (cmd._.length === 0){
 		throw new Error("COMMAND-EMPTY");

@@ -2,9 +2,11 @@
 
 This tool is not implemented yet, this is a first pass at the main spec. If you are interested in this project, feel free to email me: jeremy.chone@gmail.com.
 
+All commands listed here are in flux right now and not even in sync between the doc side and the story side (to experiment with different ways). The story is the latest thoughts right now (favor default for simplicity, and will have flags to customize). Will probably have a ~/.laydown/lay.opts to set default.
+
 ## Description
 
-**laydown** is simple way to slice your or 3rd party code in layers (i.e., set of files) and easily fetch them to boostrap or augument existing project. Not everything that could be reused should be a lib or framework. Think of it as a scaffolder that does not know what it scaffolds, any project can become a part of a scaffolding for another project.
+**laydown** is simple way to slice your or 3rd party code in layers (i.e., set of files) and easily share them to boostrap or augument existing projects. Not every reusable codes had to become a library or framework. Think of it as a scaffolder that does not know what it scaffolds, any project can become a part of a scaffolding for another project.
 
 ## Install 
 
@@ -179,6 +181,10 @@ laydown commands:
 
 # ... Cool, I want share my cool toggle component
 > lay add ./ toggle src/elem/toggle/toggle.ts src/elem/toggle/toggle.pcss
+Files added to layer 'toggle' (created) in './laydown-layers.json':
+  - src/elem/toggle/toggle.ts
+  - src/elem/toggle/toggle.pcss
+
 
 # ... let me check the newly created ./laydown-layers.json
 {
