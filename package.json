@@ -4,7 +4,7 @@
   "description": "Lay down some code files from other code files.",
   "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "./node_modules/.bin/mocha --opts mocha.opts"
   },
   "repository": {
     "type": "git",
@@ -19,11 +19,24 @@
     "tool",
     "reuse"
   ],
-  "bin": "./dist/index-bin.js",
+  "bin": "./dist/lay.js",
   "author": "Jeremy Chone <jeremy.chone@gmail.com>",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/BriteSnow/laydown/issues"
   },
-  "homepage": "https://github.com/BriteSnow/laydown#readme"
+  "homepage": "https://github.com/BriteSnow/laydown#readme",
+  "dependencies": {
+    "fs-extra-plus": "^0.1.2",
+    "minimist": "^1.2.0"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^4.0.1",
+    "@types/minimist": "^1.2.0",
+    "@types/mocha": "^2.2.42",
+    "@types/node": "^8.0.26",
+    "mocha": "^3.5.0",
+    "ts-node": "^3.3.0",
+    "typescript": "^2.5.2"
+  }
 }

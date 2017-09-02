@@ -1,2 +1,8 @@
 # Ignore mac info files
 .DS_Store
+
+_perso/
+
+node_modules
+
+test/out/

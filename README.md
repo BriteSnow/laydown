@@ -4,7 +4,7 @@ This tool is not implemented yet, this is a first pass at the main spec. If you 
 
 ## Description
 
-**laydown** is simple way to slice and reuse code between projects. Not everything has to become a framework, but most need to be reused. 
+**laydown** is simple way to slice your or 3rd party code in layers (i.e., set of files) and easily fetch them to boostrap or agument existing project. Think a scaffolder that does not know what it scaffolds.
 
 ## Install 
 
@@ -14,95 +14,91 @@ sudo npm install -g laydown
 
 This will install the `lay` command line tool.
 
-## Usage
+## Add/Create
 
-#### Adding sources
+**Command:**
 
-Adding layers source (globally, ~/.llayers/sources.json) (Must have a `layers.json` at the root)
+`lay add source_local_ref layer_name file_paths_space_deliminated`
 
-```
-lay -g add-source git@github.com:mvdom/mvdom-patterns.git
-```
+- _source_local_ref:_ folder path (in this case laydown-layers.json will be added), layers json file, or source name.
 
-Add a layer and override the source name
+**Example**
 
-```
-lay -g add-source git@github.com:mvdom/mvdom-patterns.git -name good_patterns
-```
+Assuming we are in the `/project-A/src/common/` folder.
 
-#### Downloading layers
+`lay add ../../ data ds.ts dsoMem.ts`
 
-**Format**: 
-```
-lay down source_name layer_name [-out path/to/out/dir/]
-```
+This command will create or update the following file 
 
-**Example**: 
-
-```
-lay down good_patterns data -out src/ts/
-```
-Download the files from the layer named **data** from the **good_patterns** layers source to the destintation directory **src/ts/** folder.
-
-if `-out ` is omitted then files will be downloaded in the current folder. 
-
-> NOTE: Important, right now the concept is to download files to the destination directory without their source path structure. So, just the file names.
-
-#### Adding files to a local layers.json
-
-```
-lay add ./ds*.js, ./test/ds-test.js -layer data
-```
-Add relative files matching `./ds*.js` and `./test/ds-test.js` to the project `layers.json` for the given name `data`
-
-
-#### Commands
-- `add`: Add one or more file to layers.json
-- `add-source`: add a layers source.
-- `remove-source`: Remove a source (by name)
-- `down`: Download one or more layers (comma delimited) from a named source.
-
-#### Command Options
-- `-name`: Override the name of the layers source.
-- `-g`: make the command global. Gobal commands will affect the `~/.llayers/`), non global commands will affect `./.llayers`. 
-- `-out out_dir`: This force all of the files to be downloaded in a particular folder. 
-
-> TODO: Need to fully bake the -out and -replace. For example, should -out should still follow the layer files' folder structure (will be simpler, but not as flexible when a layers have files in different folders -which we might not recommend-).
-
-> TODO: -replace: How do we do multiple replace? do we allow regex, how? 
-
-
-## layers.json
-
-> Question: Should would call it `layers.json` no matter the tool name, or should be the `laydown.json` ? Perhaps we put all in a `./laydown/` folder, and have a `./laydown/layers.json`? 
-
-
-File that contains the layers. 
-
+`/project-A/laydown-layers.json`
 ```js
 {
-  name: "mvdom-patterns",
-  layers: [
-    {
-      name: "data",
-      readme: "layers/data-readme.md",
+  layers: {
+    data: {
       files: [
-        "src/js-app/ds.ts",
-        "src/js-app/dsoMem.ts",
-        "src/js-app/dsoRemote.ts"
-      ]
-    },
-    {
-      name: "routing"
-      files: [
-        "src/js-app/route.ts"
+        "src/common/ds.ts",
+        "src/common/dsoMem.ts"
       ]
     }
-    
-  ]
+  }
 }
 ```
 
-> Note: We might want to support comments in the .json even if it is not part of the json format. However, this can reduce tooling compatibilities (e.g., showin erroneous in github and probably many editors)
 
-> Note: If we supports comment, editing it via `lay add ...` should preserve comments and formatting as much as possible (the vscode way)
+- The file paths will be relatives to `laydown-layers.json` files.
+- More files can be added by using `lay add` with same layer name. 
+- Can be removed with `lay remove ../../ data ds.ts` for example. 
+- Can list the files like `lay list ../../ data` will list the files in this layers. 
+
+## Download
+
+**Command:**
+
+`lay down source_ref layer_name [out_dir]`
+
+- _source_ref:_ source_local_ref + uri.
+
+**Example:**
+
+`lay down /project-A/ data ./src/data`
+
+will download all of the files specified in the `/demo/laydown-layers.json` "data" layer into the directory `./src/data/` (will create the directory if needed). 
+
+> Note: The source structure is not preserved, just file name. 
+
+## Add a source (aka Alias)
+
+**Format:**
+
+`lay source source_context source_path_or_uri [name_override]`
+
+**Example:**
+
+`lay source ~ /demo/ cool-patterns`
+
+- _source_context:_
+  - `.` means is the project local (where we have a .git or the closest `laydown-layers.json` or `laydown-sources.json`)
+  - `~` means global to the user will be stored in `~/.laydown/sources.json`
+  - `normal/path` can be full path path of a folder or source json file.
+- _source_path_or_uri:_ can be URL, local file path, and later git urls as well. 
+
+will create/update the file: 
+
+`~/.laydown/sources.json`
+
+```js
+{
+  sources: {
+    "cool-patterns": {
+      origin: "/demo/"
+    }
+  }
+}
+```
+
+
+## Notes
+
+- uri: first will be http/https, but will support git later. 
+- github website URLs will be transparently converted behind the scene to the raw content ones (to avoid users to get the raw urls). Later we might give some hooks to provide custom uri transformers.
+
