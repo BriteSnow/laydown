@@ -19,7 +19,7 @@
     "tool",
     "reuse"
   ],
-  "bin": "./dist/lay.js",
+  "bin": "./dist/lay-bin.js",
   "author": "Jeremy Chone <jeremy.chone@gmail.com>",
   "license": "MIT",
   "bugs": {

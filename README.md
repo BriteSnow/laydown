@@ -108,25 +108,38 @@ will create/update the file:
 This is just a story, it is not real yet. 
 
 ```sh
-# install a layers repo (just a name pointers to a set of layers hosted somwhere)
+# install a layers repo (just a name pointer to a base dir of a laydown-layers.json or a layers json file)
 > lay source https://github.com/cool-patterns
+Source "cool-patterns" with origin "https://github.com/cool-patterns" added to "~/laydown/sources.json"
 
-# download the scaffolding for a new typescript-webapp (packages.json, tsconfig.json, build/scripts.js, src/main.ts, src/view/MainView.ts, src/view/MainView.pcss test/test-main.ts, mocha.opts, web/index.html)
+# download the scaffolding for a new typescript-webapp
 > lay down cool-patterns web-starter
+Layer web-starter from source cool-patterns downloaded:
+  - packages.json 
+  - tsconfig.json
+  - build/scripts.js
+  - src/main.ts
+  - src/view/MainView.ts
+  - src/view/MainView.pcss test/test-main.ts
+  - mocha.opts
+  - web/index.html
 
 # ... Doing a "npm install" "npm run build" "npm start" ... wow stuff works!! 
-# ... Cool, this is my code, I can play with it
+# ... Cool, this is my code now, I can play with it.
 
 # ... Now, I would love to have some basic google material styles
 
-# download "src/pcss/basic-material-demo.pcss, src/pcss/basic-materia-mixins.pcss, web/base-material-demo.html"
 > lay down cool-patterns base-material
+Layer base-material from source cool-patterns downloaded: 
+  - src/pcss/basic-material-demo.pcss
+  - src/pcss/basic-materia-mixins.pcss
+  - web/base-material-demo.html
 
 # ... "npm run build" "npm start" ... going to http://localhost:8080/base-material-demo.html
 # ... Cool, I see the style there that I can use. 
 
-# ... Now, I need to work with data, would be nice to get some foundation files that add a data layer I can customize
-> lay list cool-patterns
+# ... Hum, wonder if this cool-patterns have some data layer to get me started.
+> lay desc cool-patterns
 Available layers in cool-patterns (https://github.com/cool-patterns)
   - "web-starter" : Base code layer for a first hello world using framework ..., post-css, and build scripts ..., ...
   - "base-material" : Minimalist google base material mixins than you can reuse in your app code
@@ -134,8 +147,8 @@ Available layers in cool-patterns (https://github.com/cool-patterns)
   - "route" : Simple routing emitter based on the mvdom pub/sub
  
 
-# ... Ho, that's cool, let me set what is in this data-layer
-> lay list cool-patterns data-layer
+# ... "data-layer" seems to be interesting, let me check it.
+> lay desc cool-patterns data-layer
 Layer "data-layer": 
   - Description: Simple and extensible data layer based on a Data Service Object model. Contains a DsoMem for quick prototyping, and DsoRemote base class for remote access
   - Files
@@ -144,8 +157,13 @@ Layer "data-layer":
     - "src/data/DsoRemote": Same as the DsoMem, but used REST calls to get data from server. 
     - "test/data/test-ds-mem.ts": Unit test that test the ds and DsoMem (test can be run with -g test-ds-mem. 
 
-# ... Definitely some cool patterns, let me download this. 
+# ... Interesting let me download this. 
 > lay down cool-patterns data-layer
+Layer data-layer from source cool-patterns downlaoded:
+  - src/data/ds.ts
+  - src/data/DsoMem
+  - src/data/DsoRemote
+  - test/data/test-ds-mem.ts
 
 # ... "npm run build" "npm test -- -g test-ds-mem
 # ... ha, I looked at the test/data/test-ds-mem.ts, I get the api, let me give it a try
@@ -176,5 +194,5 @@ laydown commands:
 
 # ... cool, let me share that with my friend
 
-# ... "Hey my friend, do a 'lay source https://github.com/cool-guy/cool-project' and then 'lay down cool-project toggle' and that should get you started. Best!"
+# ... "Hey friend, do a 'lay source https://github.com/cool-guy/cool-project' and then 'lay down cool-project toggle' and that should get you started. Best!"
 ``` 
