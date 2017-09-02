@@ -4,7 +4,7 @@ This tool is not implemented yet, this is a first pass at the main spec. If you 
 
 ## Description
 
-**laydown** is simple way to slice your or 3rd party code in layers (i.e., set of files) and easily fetch them to boostrap or agument existing project. Think a scaffolder that does not know what it scaffolds.
+**laydown** is simple way to slice your or 3rd party code in layers (i.e., set of files) and easily fetch them to boostrap or augument existing project. Not everything that could be reused should be a lib or framework. Think of it as a scaffolder that does not know what it scaffolds, any project can become a part of a scaffolding for another project.
 
 ## Install 
 
@@ -102,3 +102,75 @@ will create/update the file:
 - uri: first will be http/https, but will support git later. 
 - github website URLs will be transparently converted behind the scene to the raw content ones (to avoid users to get the raw urls). Later we might give some hooks to provide custom uri transformers.
 
+
+## Story
+
+This is just a story, it is not real yet. 
+
+```sh
+# install a layers repo (just a name pointers to a set of layers hosted somwhere)
+> lay source https://github.com/cool-patterns
+
+# download the scaffolding for a new typescript-webapp (packages.json, tsconfig.json, build/scripts.js, src/main.ts, src/view/MainView.ts, src/view/MainView.pcss test/test-main.ts, mocha.opts, web/index.html)
+> lay down cool-patterns web-starter
+
+# ... Doing a "npm install" "npm run build" "npm start" ... wow stuff works!! 
+# ... Cool, this is my code, I can play with it
+
+# ... Now, I would love to have some basic google material styles
+
+# download "src/pcss/basic-material-demo.pcss, src/pcss/basic-materia-mixins.pcss, web/base-material-demo.html"
+> lay down cool-patterns base-material
+
+# ... "npm run build" "npm start" ... going to http://localhost:8080/base-material-demo.html
+# ... Cool, I see the style there that I can use. 
+
+# ... Now, I need to work with data, would be nice to get some foundation files that add a data layer I can customize
+> lay list cool-patterns
+Available layers in cool-patterns (https://github.com/cool-patterns)
+  - "web-starter" : Base code layer for a first hello world using framework ..., post-css, and build scripts ..., ...
+  - "base-material" : Minimalist google base material mixins than you can reuse in your app code
+  - "data-layer" : Simple and extensible data layer based on a Data Service Object model. Contains a DsoMem for quick prototyping, and DsoRemote base class for remote access
+  - "route" : Simple routing emitter based on the mvdom pub/sub
+ 
+
+# ... Ho, that's cool, let me set what is in this data-layer
+> lay list cool-patterns data-layer
+Layer "data-layer": 
+  - Description: Simple and extensible data layer based on a Data Service Object model. Contains a DsoMem for quick prototyping, and DsoRemote base class for remote access
+  - Files
+    - "src/data/ds.ts": Use it as ds.dso(PeopeDso), which will manage the PeopleDso object as a singleton (create only the first time called)
+    - "src/data/DsoMem": You can stend your own class from the DsoMem as "class Contact extends DsoMem<number>" (where number is the id type)
+    - "src/data/DsoRemote": Same as the DsoMem, but used REST calls to get data from server. 
+    - "test/data/test-ds-mem.ts": Unit test that test the ds and DsoMem (test can be run with -g test-ds-mem. 
+
+# ... Definitely some cool patterns, let me download this. 
+> lay down cool-patterns data-layer
+
+# ... "npm run build" "npm test -- -g test-ds-mem
+# ... ha, I looked at the test/data/test-ds-mem.ts, I get the api, let me give it a try
+
+# ... a long time passed
+
+# ... I created a cool little toggle component, would love to share the code
+> lay ?
+laydown commands:
+  - "lay source ...": add a source name
+  - "lay down ...": download a layer
+  - "lay add ...": Create or add to an existing layer (from project root try "lay add ./ my-first-layer src/some-file.js src/another-file.js" and check "./laydown-layers.json")
+
+# ... Cool, I want share my cool toggle component
+> lay add ./ toggle src/elem/toggle/toggle.ts src/elem/toggle/toggle.pcss
+
+# ... let me check the newly created ./laydown-layers.json
+{
+  layers: {
+    toggle: {
+      files: [
+        "src/elem/toggle/toggle.ts",
+        "src/elem/toggle/toggle.pcss"
+      ]
+    }
+  }
+}
+``` 
