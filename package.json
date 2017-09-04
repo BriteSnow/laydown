@@ -1,6 +1,6 @@
 {
   "name": "laydown",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Laying down and sharing some code has never by that simple.",
   "main": "dist/index.js",
   "scripts": {
