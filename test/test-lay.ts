@@ -37,15 +37,16 @@ describe('test-lay-down', function () {
 	it('simple-down', async function () {
 		const testDir = await setupTestDir(this.test);
 
-		const sourceDir = path.join(testDir, "source-1");
+		// Setup: First we defined a laydown source
+		const sourceDir = path.join(testDir, "/project-A");
+		var argv = "node dist/lay-bin add ./ layer-1 src/index.js.txt src/lay.js.txt".split(" ");
+		var result = await lay(sourceDir, argv);
 
-		// Setup: First 
-		// Define
-		var pwd = path.join(sourceDir, "project-A/src/");
-		var argv = "node dist/lay-bin add ../ layer-1 index.js.txt lay.js.txt".split(" ");
-		var result = await lay(pwd, argv);
-
-		// todo: add checks
+		// lay down the layer-1 in project-B
+		const destDir = path.join(testDir, "/project-B");
+		await fs.mkdirs(destDir);
+		argv = "node dist/lay-bin down ../project-A layer-1 ./demo".split(" ");
+		result = await lay(destDir, argv);
 	});
 
 });

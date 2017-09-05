@@ -27,19 +27,19 @@ $ sudo npm install -g laydown
 laydown 0.1.0 installed, start with 'lay ?'
 ```
 
-> Fair enough. 
+> Fair enough.
 
 ```sh 
 $ lay ?
 laydown version 0.1.0 help:
 Getting started: 
-  - 'lay source https://github.com/laydown-io/lean-web-app' to setup the 'lean-web-app' source alias.
+  - 'lay source git://github.com/laydown-io/lean-web-app' to setup the 'lean-web-app' source alias.
   - 'lay down lean-web-app base' to download the 'base' layer from the 'lean-web-app' source.
   - 'lay desc lean-web-app' to describe the layers of this source.
   - 'lay ??' to open "https://laydown.io"
 Commands: 
-  - "lay source _source_ [_optional_name_]": add a source name.
-  - "lay down _source_": download a layer from a source.
+  - "lay source _origin_ [_optional_source_name_]": add a named source name alias to an origin (source_name required if not in the origin laydown.json.
+  - "lay down _source_": download a layer from a source (source name or origin).
   - "lay add _source_ _layer_name_ _files_": Create or add to an existing layer.
   - "lay desc _source_ [_layer_name_]": Describe a source or layer.
   - "lay ? _command_name_" to get more info on a command.
@@ -48,10 +48,12 @@ Commands:
 > Cool, let me try the two first commands.
 
 ```sh
-$ lay source https://github.com/laydown-io/lean-web-app
+$ lay source git://github.com/laydown-io/lean-web-app
 $ lay down lean-web-app base
-Layer 'base' from source 'lean-web-app' downloaded.
-  Files:
+Layer 'base' downloaded
+  From  : lean-web-app: 'git://github.com/laydown-io/lean-web-app/laydown.json'
+  To    : `./`
+  Files :
     - packages.json (added)
     - tsconfig.json (added)
     - build/scripts.js (added)
@@ -59,7 +61,7 @@ Layer 'base' from source 'lean-web-app' downloaded.
     - src/view/MainView.ts (added)
     - src/view/MainView.pcss test/test-main.ts (added)
     - mocha.opts (added)
-    - web/index.html (added)
+    - web/index.html (updated)
   Description:
     This is the minimum set of files to get a lean web app running. Do a "npm install" "npm run build" "npm start -w"
 ```
@@ -136,8 +138,9 @@ Layer "data-layer":
 
 ```sh
 lay add ./ toggle src/elem/toggle/toggle.ts src/elem/toggle/toggle.pcss
-Layer 'toggle' (created) in './laydown.json':
-  Files:
+Layer 'toggle' created:
+  In    : `./laydown.json`
+  Files :
     - src/elem/toggle/toggle.ts
     - src/elem/toggle/toggle.pcss
 ```
@@ -160,8 +163,7 @@ $ cat ./laydown.json
 
 > cool, let me push to my repo, and share it with my only and lonely friend. 
 
-> email to friend "hey friend, did a little simple toggle component, feel free to download the code and make it yours. Just do a `lay down https://github.com/cool-guy/cool-web-app toggle` and you should be all set. Best."
-
+> email to friend "hey friend, did a little simple toggle component, feel free to download the code and make it yours. Just do a `lay down git://github.com/cool-guy/cool-web-app toggle` and you should be all set. Best."
 
 ## Notes
 
@@ -169,3 +171,93 @@ $ cat ./laydown.json
 - Will probably have a ~/.laydown/lay.opts to set default.
 - uri: first will be http/https, but will support git later. 
 - github website URLs will be transparently converted behind the scene to the raw content ones (to avoid users to get the raw urls). Later we might give some hooks to provide custom uri transformers.
+
+## Other examples
+
+```
+$ lay source https://github.com/cool-guy/cool-web-app
+Error: This laydown file (https://github.com/cool-guy/cool-web-app/laydown.json) does not have a name property, name it when sourcing (i.e. 'lay source https://github.com/cool-guy/cool-web-app cool-web-app`)
+```
+
+```
+$ lay source https://github.com/cool-guy/cool-web-app
+Error: Sorry, the "cool-web-app" source name from (https://github.com/cool-guy/cool-web-app/laydown.json) already exist in `~/.laydown/sources.json`)
+```
+
+```
+$ lay source https://github.com/cool-guy/cool-web-app cool-web-app -dir ./
+Source "cool-web-app: https://github.com/cool-guy/cool-web-app" added to './laydown-sources.json'
+FYI: the 'cool-web-app' source name is already defined in './.laydown/sources.json' pointing to .... (this ./laydown-sources.json will take precedence)
+```
+
+```
+$ lay down my-templates svg-icons -log:json | npm run scale-icons
+```
+
+
+~/.laydown/sources.json
+```
+{
+  sources: {
+    "my-laydown-sources": {
+      origin: "git://my-project/my-laydown-sources.json"
+    }
+  }
+}
+```
+
+https://cool-site.com/other-project/other-laydown.json 
+```
+{
+  layers: {
+    network: {
+      files: [
+        "src/network-io.ts",
+        "src/network-rpc.ts"
+      ]
+    }
+  }
+}
+```
+
+lay source git://github.com/toto/coolPublicProject coolPublicProject
+
+curl https://stephane.io/laydown-layers-for-coolPublicProject.json | lay down coolPublicProject someCoolLayer
+
+
+```
+lay create ./ my-material-css
+lay set-origin my-material-css git://github.com/google/material-design-lite -git-branch experimental
+lay add base src/_mixins.scss src/styleguide.scss
+```
+
+./laydown.json
+```
+{
+  name: "my-material-css",
+  extends: "https://github.com/google/material-design-lite",
+  layers: {
+    "base": {
+      files: [
+        "src/_mixins.scss",
+        "src/styleguide.scss"
+      ]
+    }
+  }
+}
+```
+
+~/dropbox/jeremychone/laydown-material.json
+
+```
+lay down ~/dropbox/jeremychone/laydown-material.json base
+```
+
+```
+lay source ~/dropbox/jeremychone/laydown-material.json jeremy-smart-stuff
+```
+
+```
+lay publish cool-materials
+```
+

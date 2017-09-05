@@ -1,38 +1,21 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const path = require("path");
-const fs = require("fs-extra");
-const cmd_parse_1 = require("./cmd_parse");
+const cmd_1 = require("./cmd");
+const execAddCmd_1 = require("./execAddCmd");
+const execDownCmd_1 = require("./execDownCmd");
+const execHelpCmd_1 = require("./execHelpCmd");
 async function exec(cmd) {
-    if (cmd instanceof cmd_parse_1.AddCmd) {
-        execAddCmd(cmd);
+    if (cmd instanceof cmd_1.AddCmd) {
+        await execAddCmd_1.execAddCmd(cmd);
+    }
+    else if (cmd instanceof cmd_1.DownCmd) {
+        await execDownCmd_1.execDownCmd(cmd);
+    }
+    else if (cmd instanceof cmd_1.HelpCmd) {
+        await execHelpCmd_1.execHelpCmd(cmd);
     }
     else {
         throw Error("command not supported " + cmd.constructor.name);
     }
 }
 exports.exec = exec;
-async function execAddCmd(addCmd) {
-    console.log(`Going to execute`, addCmd);
-    // get the source, add the default json file if no json file, and make sure it is full resolved
-    let sourcePath = path.resolve(addCmd.source);
-    sourcePath = sourcePath.endsWith(".json") ? sourcePath : sourcePath + "/laydown-layers.json";
-    sourcePath = path.resolve(sourcePath);
-    let sourceInfo = path.parse(sourcePath);
-    // resolve the files as relative to 
-    var files = addCmd.files.map((f) => {
-        let rel = path.relative(sourceInfo.dir, f);
-        return rel;
-    });
-    console.log("will add to file: " + sourcePath + "\n\tfiles:", files);
-    var layersContent = {};
-    // Load or create new layersContent
-    if (!fs.pathExists(sourcePath)) {
-        layersContent = await fs.readJson(sourcePath);
-    }
-    else {
-        layersContent = {
-            layers: {}
-        };
-    }
-}
