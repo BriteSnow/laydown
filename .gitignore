@@ -1,8 +1,8 @@
 # Ignore mac info files
 .DS_Store
 
-_perso/
+# prevent all root folders and filenames starting with "~". By convension, they are local folders only
+# used for personal notes, data store, output dir, ...
+~*
 
 node_modules
-
-test/out/

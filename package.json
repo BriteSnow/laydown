@@ -1,6 +1,6 @@
 {
   "name": "laydown",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Laying down and sharing some code has never by that simple.",
   "main": "dist/index.js",
   "scripts": {
@@ -30,7 +30,10 @@
   },
   "homepage": "https://github.com/BriteSnow/laydown#readme",
   "dependencies": {
+    "@types/glob": "^5.0.32",
+    "@types/globby": "^6.1.0",
     "fs-extra-plus": "^0.1.3",
+    "globby": "^6.1.0",
     "minimist": "^1.2.0"
   },
   "devDependencies": {

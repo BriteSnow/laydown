@@ -13,6 +13,10 @@ function parse(cwd, argv) {
             return new cmd_1.AddCmd(cwd, cmd);
         case "down":
             return new cmd_1.DownCmd(cwd, cmd);
+        case "desc":
+            return new cmd_1.DescCmd(cwd, cmd);
+        case "create":
+            return new cmd_1.CreateCmd(cwd, cmd);
         default:
             return new cmd_1.HelpCmd(cwd, cmd);
     }
