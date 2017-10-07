@@ -30,19 +30,6 @@ class HelpCmd extends Cmd {
             this.command = this.args._[1];
         }
     }
-    getHelp() {
-        return `Getting started: 
-  - 'lay source git://github.com/laydown-io/lean-web-app' to setup the 'lean-web-app' source alias.
-  - 'lay down lean-web-app base' to download the 'base' layer from the 'lean-web-app' source.
-  - 'lay desc lean-web-app' to describe the layers of this source.
-  - 'lay ??' to open "https://laydown.io"
-Commands: 
-  - "lay source _origin_ [_optional_source_name_]": add a named source name alias to an origin (source_name required if not in the origin laydown.json.
-  - "lay down _source_": download a layer from a source (source name or origin).
-  - "lay add _source_ _layer_name_ _files_": Create or add to an existing layer.
-  - "lay desc _source_ [_layer_name_]": Describe a source or layer.
-  - "lay ? _command_name_" to get more info on a command.`;
-    }
 }
 exports.HelpCmd = HelpCmd;
 /**
